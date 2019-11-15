@@ -1,0 +1,17 @@
+clc, clear all, close all;
+fname = 'overwatch.json';
+val = jsondecode(fileread(fname));
+twenty18 = val.league.seasons(2).games; % this is all of the 2018 data
+
+game.away = ''
+game.home = ''
+game.outcome = ''
+
+games_list = repmat(game, 1,247)
+
+for i = 1:247
+    games_list(i);
+    games_list(i).away =  twenty18(i).team_away
+    games_list(i).home = twenty18(i).team_home
+    games_list(i)
+end

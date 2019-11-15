@@ -1,5 +1,38 @@
-fh = fopen("overwatch-data.json")
-toolbox = "jsonlab-1.9.mltbx"
-installedToolbox = matlab.addons.toolbox.installToolbox(toolbox)
-data = loadjson("overwatch-data.json");
-data.outcomes
+clc, clear all, close all;
+fname = 'overwatch.json';
+val = jsondecode(fileread(fname));
+twenty18 = val.league.seasons(2).games; % this is all of the 2018 data
+
+game.away = ''
+game.home = ''
+game.outcome = ''
+
+team.name = ''
+team.elo = 0
+
+
+team_list = repmat(team, 1,12)
+games_list = repmat(game, 1,247)
+team_list_index = 1;
+
+for i = 1:247
+    games_list(i);
+    games_list(i).away =  twenty18(i).team_away
+    games_list(i).home = twenty18(i).team_home
+    games_list(i).outcome = twenty18.outcome
+    %team_list(i)
+    if(get_team_index(games_list(i).away, team_list) == 0)
+        team_list(team_list_index).name = games_list(i).away;
+        team_list(team_list_index).elo = 2000;
+        team_list_index = team_list_index + 1
+    end
+    
+     if(get_team_index(games_list(i).home, team_list) == 0)
+        team_list(team_list_index).name = games_list(i).home;
+        team_list(team_list_index).elo = 2000;
+        team_list_index = team_list_index + 1
+     end
+    
+     
+    
+end

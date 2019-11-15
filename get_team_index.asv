@@ -1,0 +1,8 @@
+function [index] = get_team_index(team_name, team_list)
+for i = 1:12
+    if(team_list(i).name == team_name)
+        return i;
+    end
+   
+end
+
