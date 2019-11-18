@@ -21,9 +21,9 @@ for i = 1:247
     games_list(i);
     games_list(i).away =  twenty18(i).team_away
     games_list(i).home = twenty18(i).team_home
-    games_list(i).outcome = twenty18.outcome
-    games_list(i).odds_home = twenty18.odds_home
-    games_list(i).odds_away = twenty18.odds_draw
+    games_list(i).outcome = twenty18(i).outcome
+    games_list(i).odds_home = twenty18(i).odds_home
+    games_list(i).odds_away = twenty18(i).odds_draw
     %team_list(i)
     
     if(get_team_index(games_list(i).away, team_list) == 0)
