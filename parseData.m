@@ -41,3 +41,5 @@ for i = 1:247
      
     
 end
+
+ELO(games_list, team_list);
