@@ -16,7 +16,7 @@ for i = 1:247
     for j = 1:12
         if strcmp(team_list(j).name, winner)
             winnersELO = team_list(j).elo;
-            %winnersindex = j;
+            winnersindex = j;
             break;
         else
             continue;
@@ -28,7 +28,7 @@ for i = 1:247
         
         
         if strcmp(team_list(k).name, loser)
-            %losersindex = j;
+            losersindex = k;
             losersELO = team_list(k).elo;
             
             break;
@@ -44,7 +44,29 @@ for i = 1:247
     end
    
     
-    fprintf(winner)
+    Kvalue = 32;
+    
+    %%calculating winners expected score
+    
+    temp = (winnersELO - losersELO)/400;
+    expectedwinnerscore = 1/(1 + (10 ^ temp));
+    
+    %% calculating losers expected score
+    temploser = (losersELO - winnersELO)/400;
+    expectedloserscore = 1/(1+(10 ^ temploser));
+    
+    
+    %%calcualting adjustment
+    
+    newELOWinner = winnersELO + Kvalue*(1 - expectedwinnerscore);
+    
+    newELOLoser = losersELO + Kvalue*(0 - expectedloserscore);
+    
+    team_list(winnersindex).elo = newELOWinner;
+    
+    team_list(losersindex).elo = newELOLoser;
+    
+    
     
     
             
