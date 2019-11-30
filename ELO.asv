@@ -1,4 +1,4 @@
-function [team_list] = ELO(games_list, team_list)
+function [updatedteamlist] = ELO(games_list, team_list)
 
 for i = 1:247
     
@@ -12,11 +12,14 @@ for i = 1:247
         loser = games_list(i).home;
     end
     
-    winnersindex = get_team_index(winner, team_list);   
-    losersindex = get_team_index(loser, team_list);
-    winnersELO = team_list(winnersindex).elo;
-    losersELO = team_list(losersindex).elo;
+    winner_index = get_team_index(winner)   
+    loser_index = get_team_index(loser)
+    winner_elo = team_list(winner_index).elo
+    loser_elo = team_list(loser_index).elo
         
+        
+        
+    end
    
     
     Kvalue = 32;

@@ -1,0 +1,9 @@
+function [outputArg1,outputArg2] = predict_game(team_list, team_1, team_2)
+%PREDICT_GAME Summary of this function goes here
+%   Detailed explanation goes here
+ team_1_index = get_team_index(team_1, team_list)   
+ team_2_index = get_team_index(team_2, team_list)
+ team_1_ELO = team_list(team_1_index).elo
+ team_2_ELO = team_list(team_2_index).elo
+end
+
