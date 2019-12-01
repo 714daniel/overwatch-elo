@@ -1,7 +1,7 @@
 function [team_list] = ELO(games_list, team_list)
 
 for i = 1:247
-    
+    if (get_team_index(games_list(i).home, team_list) > 0 & get_team_index(games_list(i).away, team_list) > 0)
     %game = [games_list(i).outcome, games_list(i).home, games_list(i).away]
     %game(1)
     if games_list(i).outcome == "HOME"
@@ -48,7 +48,7 @@ for i = 1:247
     
 
     
-    
+    end
 end
 
 end
