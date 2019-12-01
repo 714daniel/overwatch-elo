@@ -14,9 +14,8 @@ team.name = '';
 team.elo = 0;
 
 
-team_list = repmat(team, 1,12);
+team_list = repmat(team, 1,17);
 games_list = repmat(game, 1,247);
-team_list_2 = repmat(team, 1, 313);
 games_list_2 = repmat(game, 1, 313);
 team_list_index = 1;
 
@@ -53,15 +52,76 @@ for i = 1:247
     
 end
 
-team_list = ELO(games_list, team_list);
+%for i = 1:1
+%    games_list_2(i);
+%    games_list_2(i).away = games_2019(i).team_away;
+%    games_list_2(i).home = games_2019(i).team_home;
+%    games_list_2(i).outcome = games_2019(i).outcome;
+%    games_list_2(i).odds_home = games_2019(i).odds_home;
+%    games_list_2(i).odds_away = games_2019(i).odds_draw;
+%    %team_list(i)
+    
+%    if(get_team_index(games_list_2(i).away, team_list) == 0)
+%        team_list(team_list_index).name = games_list_2(i).away;
+%        team_list(team_list_index).elo = 2000;
+%        team_list_index = team_list_index + 1;
+%    end
+    
+%     if(get_team_index(games_list_2(i).home, team_list) == 0)
+%        team_list(team_list_index).name = games_list_2(i).home;
+%        team_list(team_list_index).elo = 2000;
+%        team_list_index = team_list_index + 1;
+%     end
+%end
 
-for i = 1:5
+
+team_list = ELO(games_list, team_list);
+%team_list = ELO(games_list_2, team_list)
+bankroll = 1000;
+bankroll_data = [];
+
+for i = 1:313
     if(get_team_index(games_list_2(i).home, team_list) > 0 & get_team_index(games_list_2(i).away, team_list) > 0)
         %games_list_2(i).odds_home
         %games_list_2(i).odds_away
         %str2num(games_list_2(i).odds_away)
-        percent_odds_home = convertOddsToPercentage(games_list_2(i).odds_home)
-        percent_odds_away = convertOddsToPercentage(games_list_2(i).odds_away)
-        predict_game(team_list, games_list_2(i).home, games_list_2(i).away, percent_odds_home, percent_odds_away);
+        percent_odds_home = convertOddsToPercentage(games_list_2(i).odds_home) ;
+        percent_odds_away = convertOddsToPercentage(games_list_2(i).odds_away); 
+        decimal_odds_home = convertAmericanOddsToDecimal(games_list_2(i).odds_home)
+        decimal_odds_away = convertAmericanOddsToDecimal(games_list_2(i).odds_away)  
+        fprintf("ODDS OFFERED: HOME TEAM %f AWAY TEAM %f \n", percent_odds_home,percent_odds_away)
+        [bet_1,bet_2] = predict_game(team_list, games_list_2(i).home, games_list_2(i).away, percent_odds_home, percent_odds_away);
+        bet_1 = bet_1
+        bet_2 = bet_2
+        %if (bet_1 > 0)
+        if(decimal_odds_home > 3)
+            fprintf("PLACING BET ON HOME TEAM FOR %f OF BANKROLL.", bet_1 )
+            bet_size = bankroll * bet_1 / 10;
+            if(games_list_2(i).outcome == 'HOME')
+                fprintf("WON BET. WINNINGS: %f \n", bet_size * (decimal_odds_home - 1))
+                bankroll = bankroll +  (bet_size) * (decimal_odds_home - 1)
+            else
+                fprintf("LOST BET. LOSSES: %f \n", bet_size)
+                bankroll = bankroll - bet_size
+            end
+        bankroll_data = [bankroll_data bankroll];    
+        elseif(decimal_odds_away > 3)
+        %elseif(bet_2 > 0)
+            fprintf("PLACING BET ON AWAY TEAM FOR %f OF BANKROLL.", bet_2)
+            bet_size = bankroll * bet_2 / 10;
+            if(games_list_2(i).outcome == 'AWAY')
+                winnings = bet_size * (1 / (bet_size) * (decimal_odds_away - 1))
+                fprintf("WON BET. WINNINGS: %f \n", winnings)
+                bankroll = bankroll + winnings
+            else
+                fprintf("LOST BET. LOSSES: %f \n", bet_size)
+                bankroll = bankroll - bet_size
+            end
+            
+         bankroll_data = [bankroll_data bankroll];    
+        end
     end
 end
+bankroll_data;
+plot(bankroll_data)
+fprintf('FINISHED BANKROLL IS %f', bankroll)
